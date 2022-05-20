@@ -13,15 +13,14 @@ type goimage struct {
 	image *image.RGBA
 }
 
-func NewSimple(name string, xmax int, ymax int) goimage {
+func New(name string, xmax int, ymax int) goimage {
 	b := image.Rect(0, 0, xmax, ymax)
 	image := image.NewRGBA(b)
 
 	return goimage{name, image}
-
 }
 
-func NewCorners(name string, xmin int, ymin int, xmax int, ymax int) goimage {
+func NewWithCorners(name string, xmin int, ymin int, xmax int, ymax int) goimage {
 	b := image.Rect(xmin, ymin, xmax, ymax)
 	image := image.NewRGBA(b)
 
@@ -44,7 +43,6 @@ func (gimg *goimage) Save() error {
 	}
 
 	file.Close()
-
 	return nil
 }
 
