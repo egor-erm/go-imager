@@ -3,6 +3,7 @@ package goimage
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
 	"image/png"
 	"os"
@@ -44,6 +45,15 @@ func (gimg *goimage) Save() error {
 
 	file.Close()
 	return nil
+}
+
+func (gimg *goimage) SetPixel(x int, y int, color color.RGBA) {
+	gimg.image.SetRGBA(x, y, color)
+}
+
+func (gimg *goimage) SetHEXPixel(x int, y int, c string) {
+	color := gocolor.HEXtoRGBA(c)
+	gimg.image.SetRGBA(x, y, color)
 }
 
 func Open(name string) (*goimage, error) {

@@ -1,4 +1,4 @@
-package manager
+package gocolor
 
 import (
 	"fmt"
