@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
 	"image/png"
 	"os"
 
@@ -17,18 +16,18 @@ type goimage struct {
 	image *image.RGBA
 }
 
-func New(name string, xmax int, ymax int) goimage {
+func New(name string, xmax int, ymax int) *goimage {
 	b := image.Rect(0, 0, xmax, ymax)
 	image := image.NewRGBA(b)
 
-	return goimage{name, image}
+	return &goimage{name, image}
 }
 
-func NewWithCorners(name string, xmin int, ymin int, xmax int, ymax int) goimage {
+func NewWithCorners(name string, xmin int, ymin int, xmax int, ymax int) *goimage {
 	b := image.Rect(xmin, ymin, xmax, ymax)
 	image := image.NewRGBA(b)
 
-	return goimage{name, image}
+	return &goimage{name, image}
 }
 
 func (gimg *goimage) Save() error {
@@ -84,32 +83,4 @@ func (gimg *goimage) ClearPixel(x int, y int) {
 
 func (gimg *goimage) ClearPixelByVectros(vec mgl32.Vec2) {
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color.RGBA{0, 0, 0, 0})
-}
-
-func Open(name string) (*goimage, error) {
-	file, err := os.Open(name)
-	if err != nil {
-		return &goimage{}, fmt.Errorf("error opening file: %s", err)
-	}
-
-	img, err := png.Decode(file)
-	if err != nil {
-		return &goimage{}, fmt.Errorf("error decoding image: %s", err)
-	}
-
-	rgbaing := imageToRGBA(img)
-	file.Close()
-
-	return &goimage{name, rgbaing}, nil
-}
-
-func imageToRGBA(src image.Image) *image.RGBA {
-	if dst, ok := src.(*image.RGBA); ok {
-		return dst
-	}
-
-	b := src.Bounds()
-	img := image.NewRGBA(image.Rect(0, 0, b.Dx(), b.Dy()))
-	draw.Draw(img, img.Bounds(), src, b.Min, draw.Src)
-	return img
 }
