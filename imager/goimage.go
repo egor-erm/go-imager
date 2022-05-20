@@ -9,6 +9,7 @@ import (
 	"os"
 
 	gocolor "github.com/egor-erm/goimager/manager"
+	"github.com/go-gl/mathgl/mgl32"
 )
 
 type goimage struct {
@@ -53,9 +54,18 @@ func (gimg *goimage) SetPixel(x int, y int, color color.RGBA) {
 	gimg.image.SetRGBA(x, y, color)
 }
 
+func (gimg *goimage) SetPixelByVector(vec mgl32.Vec2, color color.RGBA) {
+	gimg.image.SetRGBA(int(vec.X()), int(vec.Y()), color)
+}
+
 func (gimg *goimage) SetHEXPixel(x int, y int, c string) {
 	color := gocolor.HEXtoRGBA(c)
 	gimg.SetPixel(x, y, color)
+}
+
+func (gimg *goimage) SetHEXPixelByVector(vec mgl32.Vec2, c string) {
+	color := gocolor.HEXtoRGBA(c)
+	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
 }
 
 func (gimg *goimage) SetHEXAlphaPixel(x int, y int, c string, alpha uint8) {
@@ -63,8 +73,17 @@ func (gimg *goimage) SetHEXAlphaPixel(x int, y int, c string, alpha uint8) {
 	gimg.SetPixel(x, y, color)
 }
 
+func (gimg *goimage) SetHEXAlphaPixelByVector(vec mgl32.Vec2, c string, alpha uint8) {
+	color := gocolor.HEXAlphatoRGBA(c, alpha)
+	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
+}
+
 func (gimg *goimage) ClearPixel(x int, y int) {
 	gimg.SetPixel(x, y, color.RGBA{0, 0, 0, 0})
+}
+
+func (gimg *goimage) ClearPixelByVectros(vec mgl32.Vec2) {
+	gimg.SetPixel(int(vec.X()), int(vec.Y()), color.RGBA{0, 0, 0, 0})
 }
 
 func Open(name string) (*goimage, error) {
