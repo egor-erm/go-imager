@@ -57,23 +57,23 @@ func (gimg *goimage) SetPixelByVector(vec mgl32.Vec2, color color.RGBA) {
 	gimg.image.SetRGBA(int(vec.X()), int(vec.Y()), color)
 }
 
-func (gimg *goimage) SetHEXPixel(x int, y int, c string) {
-	color := gocolor.HEXtoRGBA(c)
+func (gimg *goimage) SetHexPixel(x int, y int, c string) {
+	color := gocolor.HexToRGBA(c)
 	gimg.SetPixel(x, y, color)
 }
 
-func (gimg *goimage) SetHEXPixelByVector(vec mgl32.Vec2, c string) {
-	color := gocolor.HEXtoRGBA(c)
+func (gimg *goimage) SetHexPixelByVector(vec mgl32.Vec2, c string) {
+	color := gocolor.HexToRGBA(c)
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
 }
 
-func (gimg *goimage) SetHEXAlphaPixel(x int, y int, c string, alpha uint8) {
-	color := gocolor.HEXAlphatoRGBA(c, alpha)
+func (gimg *goimage) SetHexAlphaPixel(x int, y int, c string, alpha uint8) {
+	color := gocolor.HexAlphaToRGBA(c, alpha)
 	gimg.SetPixel(x, y, color)
 }
 
-func (gimg *goimage) SetHEXAlphaPixelByVector(vec mgl32.Vec2, c string, alpha uint8) {
-	color := gocolor.HEXAlphatoRGBA(c, alpha)
+func (gimg *goimage) SetHexAlphaPixelByVector(vec mgl32.Vec2, c string, alpha uint8) {
+	color := gocolor.HexAlphaToRGBA(c, alpha)
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
 }
 
@@ -81,6 +81,32 @@ func (gimg *goimage) ClearPixel(x int, y int) {
 	gimg.SetPixel(x, y, color.RGBA{0, 0, 0, 0})
 }
 
-func (gimg *goimage) ClearPixelByVectros(vec mgl32.Vec2) {
+func (gimg *goimage) ClearPixelByVectors(vec mgl32.Vec2) {
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color.RGBA{0, 0, 0, 0})
+}
+
+func (gimg *goimage) DrowRect(x1 int, y1 int, x2 int, y2 int, color color.RGBA) {
+	for y := y1; y <= y2; y++ {
+		for x := x1; x < x2; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
+}
+
+func (gimg *goimage) DrowHexRect(x1 int, y1 int, x2 int, y2 int, c string) {
+	color := gocolor.HexToRGBA(c)
+	for y := y1; y <= y2; y++ {
+		for x := x1; x < x2; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
+}
+
+func (gimg *goimage) DrowHexAlphaRect(x1 int, y1 int, x2 int, y2 int, c string, alpha uint8) {
+	color := gocolor.HexAlphaToRGBA(c, alpha)
+	for y := y1; y <= y2; y++ {
+		for x := x1; x < x2; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
 }

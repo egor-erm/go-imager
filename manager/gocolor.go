@@ -5,11 +5,11 @@ import (
 	"image/color"
 )
 
-func RGBAtoHEX(c color.RGBA) string {
+func RGBAtoHex(c color.RGBA) string {
 	return fmt.Sprintf("#%02X%02X%02X", c.R, c.G, c.B)
 }
 
-func HEXtoRGBA(hex string) color.RGBA {
+func HexToRGBA(hex string) color.RGBA {
 	var c color.RGBA
 	c.A = 255
 	switch len(hex) {
@@ -28,7 +28,7 @@ func HEXtoRGBA(hex string) color.RGBA {
 	}
 }
 
-func HEXAlphatoRGBA(hex string, alpha uint8) color.RGBA {
+func HexAlphaToRGBA(hex string, alpha uint8) color.RGBA {
 	var c color.RGBA
 	c.A = uint8(alpha)
 	switch len(hex) {
