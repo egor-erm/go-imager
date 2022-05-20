@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"image/color"
+	goimage "github.com/egor-erm/goimager/imager"
 )
 
 func main() {
-	c := color.RGBA{100, 100, 100, 255}
-	fmt.Printf("#%X%X%X", c.R, c.G, c.B)
+	img := goimage.New("eg.png", 100, 100)
+	img.SetHEXPixel(99, 99, "#00FFD5")
+	img.Save()
 }
