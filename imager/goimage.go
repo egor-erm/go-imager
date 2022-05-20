@@ -7,6 +7,8 @@ import (
 	"image/draw"
 	"image/png"
 	"os"
+
+	gocolor "github.com/egor-erm/goimager/manager"
 )
 
 type goimage struct {
@@ -53,7 +55,16 @@ func (gimg *goimage) SetPixel(x int, y int, color color.RGBA) {
 
 func (gimg *goimage) SetHEXPixel(x int, y int, c string) {
 	color := gocolor.HEXtoRGBA(c)
-	gimg.image.SetRGBA(x, y, color)
+	gimg.SetPixel(x, y, color)
+}
+
+func (gimg *goimage) SetHEXAlphaPixel(x int, y int, c string, alpha uint8) {
+	color := gocolor.HEXAlphatoRGBA(c, alpha)
+	gimg.SetPixel(x, y, color)
+}
+
+func (gimg *goimage) ClearPixel(x int, y int) {
+	gimg.SetPixel(x, y, color.RGBA{0, 0, 0, 0})
 }
 
 func Open(name string) (*goimage, error) {
