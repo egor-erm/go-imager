@@ -110,3 +110,29 @@ func (gimg *goimage) DrowHexAlphaRect(x1 int, y1 int, x2 int, y2 int, c string, 
 		}
 	}
 }
+
+func (gimg *goimage) FillAll(color color.RGBA) {
+	for y := gimg.image.Bounds().Min.Y; y < gimg.image.Bounds().Max.Y; y++ {
+		for x := gimg.image.Bounds().Min.X; x < gimg.image.Bounds().Max.X; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
+}
+
+func (gimg *goimage) FillAllHex(c string) {
+	color := gocolor.HexToRGBA(c)
+	for y := gimg.image.Bounds().Min.Y; y < gimg.image.Bounds().Max.Y; y++ {
+		for x := gimg.image.Bounds().Min.X; x < gimg.image.Bounds().Max.X; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
+}
+
+func (gimg *goimage) FillAllHexAlpha(c string, alpha uint8) {
+	color := gocolor.HexAlphaToRGBA(c, alpha)
+	for y := gimg.image.Bounds().Min.Y; y < gimg.image.Bounds().Max.Y; y++ {
+		for x := gimg.image.Bounds().Min.X; x < gimg.image.Bounds().Max.X; x++ {
+			gimg.SetPixel(x, y, color)
+		}
+	}
+}
