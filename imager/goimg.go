@@ -12,7 +12,7 @@ import (
 )
 
 type goimage struct {
-	name  string
+	Name  string
 	image *image.RGBA
 }
 
@@ -31,10 +31,10 @@ func NewWithCorners(name string, xmin int, ymin int, xmax int, ymax int) *goimag
 }
 
 func (gimg *goimage) Save() error {
-	file, err := os.Create(gimg.name)
+	file, err := os.Create(gimg.Name)
 
 	if err != nil || file == nil {
-		file, err = os.Open(gimg.name)
+		file, err = os.Open(gimg.Name)
 		if err != nil {
 			return fmt.Errorf("error opening file: %s", err)
 		}
