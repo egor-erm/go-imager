@@ -140,3 +140,7 @@ func (gimg *goimage) FillAllHexAlpha(c string, alpha uint8) {
 func (gimg *goimage) GetPixel(x int, y int) color.Color {
 	return gimg.image.At(x, y)
 }
+
+func (gimg *goimage) GetRawImage() *image.RGBA {
+	return gimg.image
+}
