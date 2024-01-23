@@ -1,11 +1,8 @@
 package goimage
 
 import (
-	"fmt"
 	"image"
 	"image/color"
-	"image/png"
-	"os"
 
 	gocolor "github.com/egor-erm/goimager/manager"
 	"github.com/go-gl/mathgl/mgl32"
@@ -28,25 +25,6 @@ func NewWithCorners(name string, xmin, ymin, xmax, ymax int) *goimage {
 	image := image.NewRGBA(b)
 
 	return &goimage{name, image}
-}
-
-func (gimg *goimage) Save() error {
-	file, err := os.Create(gimg.Name)
-
-	if err != nil || file == nil {
-		file, err = os.Open(gimg.Name)
-		if err != nil {
-			return fmt.Errorf("error opening file: %s", err)
-		}
-	}
-
-	err = png.Encode(file, gimg.image)
-	if err != nil {
-		return fmt.Errorf("error encoding image: %s", err)
-	}
-
-	file.Close()
-	return nil
 }
 
 func (gimg *goimage) SetPixel(x, y int, color color.RGBA) {
