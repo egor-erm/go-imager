@@ -16,14 +16,14 @@ type goimage struct {
 	image *image.RGBA
 }
 
-func New(name string, xmax int, ymax int) *goimage {
+func New(name string, xmax, ymax int) *goimage {
 	b := image.Rect(0, 0, xmax, ymax)
 	image := image.NewRGBA(b)
 
 	return &goimage{name, image}
 }
 
-func NewWithCorners(name string, xmin int, ymin int, xmax int, ymax int) *goimage {
+func NewWithCorners(name string, xmin, ymin, xmax, ymax int) *goimage {
 	b := image.Rect(xmin, ymin, xmax, ymax)
 	image := image.NewRGBA(b)
 
@@ -49,7 +49,11 @@ func (gimg *goimage) Save() error {
 	return nil
 }
 
-func (gimg *goimage) SetPixel(x int, y int, color color.RGBA) {
+func (gimg *goimage) SetPixel(x, y int, color color.RGBA) {
+	gimg.image.SetRGBA(x, y, color)
+}
+
+func (gimg *goimage) SetPixelColor(x, y int, color color.RGBA) {
 	gimg.image.SetRGBA(x, y, color)
 }
 
@@ -57,7 +61,7 @@ func (gimg *goimage) SetPixelByVector(vec mgl32.Vec2, color color.RGBA) {
 	gimg.image.SetRGBA(int(vec.X()), int(vec.Y()), color)
 }
 
-func (gimg *goimage) SetHexPixel(x int, y int, c string) {
+func (gimg *goimage) SetHexPixel(x, y int, c string) {
 	color := gocolor.HexToRGBA(c)
 	gimg.SetPixel(x, y, color)
 }
@@ -67,7 +71,7 @@ func (gimg *goimage) SetHexPixelByVector(vec mgl32.Vec2, c string) {
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
 }
 
-func (gimg *goimage) SetHexAlphaPixel(x int, y int, c string, alpha uint8) {
+func (gimg *goimage) SetHexAlphaPixel(x, y int, c string, alpha uint8) {
 	color := gocolor.HexAlphaToRGBA(c, alpha)
 	gimg.SetPixel(x, y, color)
 }
@@ -77,7 +81,7 @@ func (gimg *goimage) SetHexAlphaPixelByVector(vec mgl32.Vec2, c string, alpha ui
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color)
 }
 
-func (gimg *goimage) ClearPixel(x int, y int) {
+func (gimg *goimage) ClearPixel(x, y int) {
 	gimg.SetPixel(x, y, color.RGBA{0, 0, 0, 0})
 }
 
@@ -85,7 +89,7 @@ func (gimg *goimage) ClearPixelByVectors(vec mgl32.Vec2) {
 	gimg.SetPixel(int(vec.X()), int(vec.Y()), color.RGBA{0, 0, 0, 0})
 }
 
-func (gimg *goimage) DrowRect(x1 int, y1 int, x2 int, y2 int, color color.RGBA) {
+func (gimg *goimage) DrowRect(x1, y1, x2, y2 int, color color.RGBA) {
 	for y := y1; y <= y2; y++ {
 		for x := x1; x < x2; x++ {
 			gimg.SetPixel(x, y, color)
@@ -93,7 +97,7 @@ func (gimg *goimage) DrowRect(x1 int, y1 int, x2 int, y2 int, color color.RGBA) 
 	}
 }
 
-func (gimg *goimage) DrowHexRect(x1 int, y1 int, x2 int, y2 int, c string) {
+func (gimg *goimage) DrowHexRect(x1, y1, x2, y2 int, c string) {
 	color := gocolor.HexToRGBA(c)
 	for y := y1; y <= y2; y++ {
 		for x := x1; x < x2; x++ {
@@ -102,7 +106,7 @@ func (gimg *goimage) DrowHexRect(x1 int, y1 int, x2 int, y2 int, c string) {
 	}
 }
 
-func (gimg *goimage) DrowHexAlphaRect(x1 int, y1 int, x2 int, y2 int, c string, alpha uint8) {
+func (gimg *goimage) DrowHexAlphaRect(x1, y1, x2, y2 int, c string, alpha uint8) {
 	color := gocolor.HexAlphaToRGBA(c, alpha)
 	for y := y1; y <= y2; y++ {
 		for x := x1; x < x2; x++ {
@@ -137,10 +141,20 @@ func (gimg *goimage) FillAllHexAlpha(c string, alpha uint8) {
 	}
 }
 
-func (gimg *goimage) GetPixel(x int, y int) color.Color {
+func (gimg *goimage) GetPixel(x, y int) color.Color {
 	return gimg.image.At(x, y)
 }
 
 func (gimg *goimage) GetRawImage() *image.RGBA {
 	return gimg.image
+}
+
+func (gimg *goimage) DrawImage(img *goimage, x, y int) {
+	for xc := 0; xc < img.GetRawImage().Bounds().Max.X; xc++ {
+		for yc := 0; yc < img.GetRawImage().Bounds().Max.Y; yc++ {
+			r, g, b, a := img.GetPixel(xc, yc).RGBA()
+			color := color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+			gimg.SetPixel(x+xc, y+yc, color)
+		}
+	}
 }
