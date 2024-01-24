@@ -1,7 +1,7 @@
 package main
 
 import (
-	goimage "github.com/egor-erm/goimager/imager"
+	goimage "github.com/egor-erm/go-imager/goimage"
 )
 
 func main() {

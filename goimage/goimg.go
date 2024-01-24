@@ -4,7 +4,7 @@ import (
 	"image"
 	"image/color"
 
-	gocolor "github.com/egor-erm/goimager/manager"
+	gocolor "github.com/egor-erm/go-imager/color"
 	"github.com/go-gl/mathgl/mgl32"
 )
 

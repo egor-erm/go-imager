@@ -1,4 +1,4 @@
-package gocolor
+package color
 
 import (
 	"fmt"
