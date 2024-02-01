@@ -141,3 +141,48 @@ func (gimg *goimage) DrawImage(img *goimage, x, y int) {
 		}
 	}
 }
+
+func (gimg *goimage) DrawMirroredXImage(img *goimage, x, y int) {
+	for xc := 0; xc < img.GetRawImage().Bounds().Max.X; xc++ {
+		for yc := 0; yc < img.GetRawImage().Bounds().Max.Y; yc++ {
+			r, g, b, a := img.GetPixel(xc, yc).RGBA()
+
+			if a == 0 {
+				continue
+			}
+
+			color := color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+			gimg.SetPixel(x+(img.GetRawImage().Bounds().Max.X-xc), y+yc, color)
+		}
+	}
+}
+
+func (gimg *goimage) DrawMirroredYImage(img *goimage, x, y int) {
+	for xc := 0; xc < img.GetRawImage().Bounds().Max.X; xc++ {
+		for yc := 0; yc < img.GetRawImage().Bounds().Max.Y; yc++ {
+			r, g, b, a := img.GetPixel(xc, yc).RGBA()
+
+			if a == 0 {
+				continue
+			}
+
+			color := color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+			gimg.SetPixel(x+xc, y+(img.GetRawImage().Bounds().Max.Y-yc), color)
+		}
+	}
+}
+
+func (gimg *goimage) DrawMirroredXYImage(img *goimage, x, y int) {
+	for xc := 0; xc < img.GetRawImage().Bounds().Max.X; xc++ {
+		for yc := 0; yc < img.GetRawImage().Bounds().Max.Y; yc++ {
+			r, g, b, a := img.GetPixel(xc, yc).RGBA()
+
+			if a == 0 {
+				continue
+			}
+
+			color := color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+			gimg.SetPixel(x+(img.GetRawImage().Bounds().Max.X-xc), y+(img.GetRawImage().Bounds().Max.Y-yc), color)
+		}
+	}
+}
