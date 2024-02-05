@@ -7,6 +7,7 @@ import (
 	"image/draw"
 	"image/png"
 	"os"
+	"strings"
 )
 
 func Open(name string) (*goimage, error) {
@@ -81,7 +82,12 @@ func ExportExpanded(name string, multi int) error {
 		return err
 	}
 
-	exp := New("expanded_"+name, img.image.Bounds().Max.X*multi, img.image.Bounds().Max.Y*multi)
+	tags := strings.Split(name, ".")
+	if len(tags) != 2 {
+		return fmt.Errorf("format error: " + name)
+	}
+
+	exp := New(tags[0]+"-exp."+tags[1], img.image.Bounds().Max.X*multi, img.image.Bounds().Max.Y*multi)
 	for x := 0; x < img.GetRawImage().Bounds().Max.X; x++ {
 		for y := 0; y < img.GetRawImage().Bounds().Max.Y; y++ {
 			r, g, b, a := img.GetPixel(x, y).RGBA()
@@ -97,4 +103,20 @@ func ExportExpanded(name string, multi int) error {
 	}
 
 	return exp.Save()
+}
+
+func ExportAll(folder string, multi int) error {
+	files, err := os.ReadDir(folder)
+	if err != nil {
+		return err
+	}
+
+	for _, f := range files {
+		err = ExportExpanded(folder+"/"+f.Name(), multi)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
