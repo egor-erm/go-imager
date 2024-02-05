@@ -69,7 +69,7 @@ func (gimg *goimage) ClearPixelByVectors(vec mgl32.Vec2) {
 
 func (gimg *goimage) DrowRect(x1, y1, x2, y2 int, color color.RGBA) {
 	for y := y1; y <= y2; y++ {
-		for x := x1; x < x2; x++ {
+		for x := x1; x <= x2; x++ {
 			gimg.SetPixel(x, y, color)
 		}
 	}
@@ -78,7 +78,7 @@ func (gimg *goimage) DrowRect(x1, y1, x2, y2 int, color color.RGBA) {
 func (gimg *goimage) DrowHexRect(x1, y1, x2, y2 int, c string) {
 	color := gocolor.HexToRGBA(c)
 	for y := y1; y <= y2; y++ {
-		for x := x1; x < x2; x++ {
+		for x := x1; x <= x2; x++ {
 			gimg.SetPixel(x, y, color)
 		}
 	}
@@ -87,7 +87,7 @@ func (gimg *goimage) DrowHexRect(x1, y1, x2, y2 int, c string) {
 func (gimg *goimage) DrowHexAlphaRect(x1, y1, x2, y2 int, c string, alpha uint8) {
 	color := gocolor.HexAlphaToRGBA(c, alpha)
 	for y := y1; y <= y2; y++ {
-		for x := x1; x < x2; x++ {
+		for x := x1; x <= x2; x++ {
 			gimg.SetPixel(x, y, color)
 		}
 	}

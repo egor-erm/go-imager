@@ -3,6 +3,7 @@ package goimage
 import (
 	"fmt"
 	"image"
+	"image/color"
 	"image/draw"
 	"image/png"
 	"os"
@@ -72,4 +73,28 @@ func (gimg *goimage) SaveNewImage(name string) error {
 
 	file.Close()
 	return nil
+}
+
+func ExportExpanded(name string, multi int) error {
+	img, err := Open(name)
+	if err != nil {
+		return err
+	}
+
+	exp := New("expanded_"+name, img.image.Bounds().Max.X*multi, img.image.Bounds().Max.Y*multi)
+	for x := 0; x < img.GetRawImage().Bounds().Max.X; x++ {
+		for y := 0; y < img.GetRawImage().Bounds().Max.Y; y++ {
+			r, g, b, a := img.GetPixel(x, y).RGBA()
+
+			if a == 0 {
+				continue
+			}
+
+			color := color.RGBA{uint8(r), uint8(g), uint8(b), uint8(a)}
+
+			exp.DrowRect(x*multi, y*multi, x*multi+multi-1, y*multi+multi-1, color)
+		}
+	}
+
+	return exp.Save()
 }
