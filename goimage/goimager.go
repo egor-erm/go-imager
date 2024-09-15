@@ -120,3 +120,53 @@ func ExportAll(folder string, multi int) error {
 
 	return nil
 }
+
+func Pixelate(name string, multi int) (*goimage, error) {
+	img, err := Open(name)
+	if err != nil {
+		return nil, err
+	}
+
+	tags := strings.Split(name, ".")
+	if len(tags) != 2 {
+		return nil, fmt.Errorf("format error: " + name)
+	}
+
+	temp := New(tags[0]+"-px."+tags[1], img.image.Bounds().Max.X/multi, img.image.Bounds().Max.Y/multi)
+	for x := 0; x < img.GetRawImage().Bounds().Max.X; x += multi {
+		if x+multi > img.GetRawImage().Bounds().Max.X {
+			break
+		}
+
+		for y := 0; y < img.GetRawImage().Bounds().Max.Y; y += multi {
+			if y+multi > img.GetRawImage().Bounds().Max.Y {
+				break
+			}
+
+			var mr, mg, mb uint32
+			for ix := x; ix < x+multi; ix++ {
+				for iy := y; iy < y+multi; iy++ {
+					rgb := img.GetPixel(ix, iy).(color.RGBA)
+
+					mr += uint32(rgb.R)
+					mg += uint32(rgb.G)
+					mb += uint32(rgb.B)
+				}
+			}
+
+			color := color.RGBA{uint8(mr / uint32(multi*multi)), uint8(mg / uint32(multi*multi)), uint8(mb / uint32(multi*multi)), 255}
+			temp.SetPixel(x/multi, y/multi, color)
+		}
+	}
+
+	return temp, nil
+}
+
+func PixelateSave(name string, multi int) error {
+	img, err := Pixelate(name, multi)
+	if err != nil {
+		return err
+	}
+
+	return img.Save()
+}
